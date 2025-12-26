@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.util.concurrent.ConcurrentHashMap;
 
 /* Serializa LogEvent para JSON de forma segura */
+@SuppressWarnings("all")
 final class SafeLogJsonSerializer {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -19,42 +20,49 @@ final class SafeLogJsonSerializer {
     }
 
     static String toJson(LogEvent event) {
-        ObjectNode root = MAPPER.createObjectNode();
+        ObjectNode json = MAPPER.createObjectNode();
 
-        root.put("timestamp", event.getTimestamp());
-        root.put("traceId", event.getTraceId());
-        root.put("correlationId", event.getCorrelationId());
-        root.put("source", event.getSource().getCode());
-        root.put("sourceDescription", event.getSource().getDescription());
-        root.put("eventType", event.getEventType().name());
+        json.put("timestamp", event.getTimestamp());
+        json.put("traceId", event.getTraceId());
+        json.put("correlationId", event.getCorrelationId());
+        json.put("source", event.getSource().getCode());
+        json.put("sourceDescription", event.getSource().getDescription());
+        json.put("eventType", event.getEventType().name());
 
-        if (event.getMessage() != null) {
-            root.put("message", event.getMessage());
-        }
-        if (event.getCounterSuccess() != null) {
-            root.put("countSuccess", event.getCounterSuccess());
-        }
-        if (event.getCounterError() != null) {
-            root.put("countError", event.getCounterError());
-        }
-        if (event.getSize() > 0) {
-            root.put("size", event.getSize());
-        }
-        if (event.getDurationMs() != null) {
-            root.put("durationMs", event.getDurationMs());
-        }
+        putIfNotNull(json, "message", event.getMessage());
+        putIfNotNull(json, "countSuccess", event.getCounterSuccess());
+        putIfNotNull(json, "countError", event.getCounterError());
+        putIfNotNull(json, "durationMs", event.getDurationMs());
+        putIfNotNull(json, "size", event.getSize());
+
         if (event.getError() != null) {
-            root.put("error", event.getError().getClass().getName());
-            root.put("errorMessage", event.getError().getMessage());
+            putIfNotNull(json, "error", event.getError().getClass().getName());
+            putIfNotNull(json, "errorMessage", event.getError().getMessage());
         }
         if (event.getDetail() != null) {
-            root.set("detail", serializeDetail(event.getDetail()));
+            json.set("detail", serializeDetail(event.getDetail()));
         }
 
         try {
-            return MAPPER.writeValueAsString(root);
+            return MAPPER.writeValueAsString(json);
         } catch (JsonProcessingException e) {
             return "{\"error\":\"log_serialization_failed\"}";
+        }
+    }
+
+    public static void putIfNotNull(ObjectNode node, String field, Object value) {
+        if (value == null) return;
+
+        if (value instanceof String) {
+            node.put(field, (String) value);
+        } else if (value instanceof Integer) {
+            node.put(field, (Integer) value);
+        } else if (value instanceof Long) {
+            node.put(field, (Long) value);
+        } else if (value instanceof Boolean) {
+            node.put(field, (Boolean) value);
+        } else {
+            node.set(field, MAPPER.valueToTree(value));
         }
     }
 
