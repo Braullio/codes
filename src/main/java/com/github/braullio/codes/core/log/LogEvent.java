@@ -30,7 +30,7 @@ public final class LogEvent implements Serializable {
     private final Map<String, Object> extras;
     private final LogLevel levelOverride;
 
-    private LogEvent(LogEventBuilder b) {
+    LogEvent(LogEventBuilder b) {
         this.timestamp = b.timestamp;
         this.traceId = b.traceId;
         this.correlationId = b.correlationId;
@@ -70,95 +70,5 @@ public final class LogEvent implements Serializable {
     /* ===== Builder ===== */
     public static LogEventBuilder builder(String traceId, String correlationId, LogSource source, EventType eventType) {
         return new LogEventBuilder(traceId, correlationId, source, eventType);
-    }
-
-    public static final class LogEventBuilder {
-        private final long timestamp = System.currentTimeMillis();
-        private final String traceId;
-        private final String correlationId;
-        private final LogSource source;
-        private final EventType eventType;
-        private String message;
-        private Object detail;
-        private Throwable error;
-        private Long counterSuccess;
-        private Long counterError;
-        private Long durationMs;
-        private Long size;
-        private Map<String, Object> extras;
-        private LogLevel levelOverride;
-
-        private LogEventBuilder(String traceId, String correlationId, LogSource source, EventType eventType) {
-            this.traceId = traceId;
-            this.correlationId = correlationId;
-            this.source = source;
-            this.eventType = eventType;
-        }
-
-        public LogEventBuilder message(String message) {
-            this.message = message;
-            return this;
-        }
-
-        public LogEventBuilder detail(Object detail) {
-            this.detail = detail;
-            return this;
-        }
-
-        public LogEventBuilder error(Throwable error) {
-            this.error = error;
-            this.countError();
-            return this;
-        }
-
-        public LogEventBuilder countSuccess() {
-            this.counterSuccess = addCounter(this.counterSuccess);
-            return this;
-        }
-
-        public LogEventBuilder countError() {
-            this.counterError = addCounter(this.counterError);
-            return this;
-        }
-
-        public LogEventBuilder durationMs(long durationMs) {
-            this.durationMs = durationMs;
-            return this;
-        }
-
-        public LogEventBuilder size(long size) {
-            this.size = size;
-            return this;
-        }
-
-        public LogEventBuilder extras(Map<String, Object> extras) {
-            this.extras = extras;
-            return this;
-        }
-
-        public LogEventBuilder warn() {
-            this.levelOverride = LogLevel.WARN;
-            return this;
-        }
-
-        public LogEventBuilder info() {
-            this.levelOverride = LogLevel.INFO;
-            return this;
-        }
-
-        public LogEvent build() {
-            return new LogEvent(this);
-        }
-
-        public void commit() {
-            new LogEvent(this).commit();
-        }
-
-        private Long addCounter(Long counter) {
-            if (counter == null) {
-                counter = 0L;
-            }
-            return ++counter;
-        }
     }
 }

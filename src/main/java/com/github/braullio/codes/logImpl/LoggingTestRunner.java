@@ -1,6 +1,7 @@
 package com.github.braullio.codes.logImpl;
 
 import com.github.braullio.codes.core.log.LogEvent;
+import com.github.braullio.codes.core.log.LogEventBuilder;
 
 import static com.github.braullio.codes.logImpl.ProjectLogSource.GENERIC_JOB;
 import static com.github.braullio.codes.logImpl.ProjectLogSource.API_CLIENT;
@@ -33,7 +34,7 @@ class LoggingTestRunner {
         }
 
         /* ERROR automático (exception) em um job */
-        LogEvent.LogEventBuilder log = LogEvent.builder(traceId, cpf, GENERIC_JOB, HTTP_ERROR);
+        LogEventBuilder log = LogEvent.builder(traceId, cpf, GENERIC_JOB, HTTP_ERROR);
         try {
             String[] arrayDeStrings = {"Banana", "Maçã", "Pera"};
             log.size(arrayDeStrings.length);
@@ -51,7 +52,7 @@ class LoggingTestRunner {
         }
 
         /* INFO final com contador */
-        LogEvent.LogEventBuilder logEvent = LogEvent.builder(traceId, cpf, GENERIC_JOB, PROCESS_END);
+        LogEventBuilder logEvent = LogEvent.builder(traceId, cpf, GENERIC_JOB, PROCESS_END);
         String[] arrayDeStrings = {"Banana", "Maçã", "Pera"};
         for (String novaString : arrayDeStrings) {
             if ("Pera".equals(novaString)) {
