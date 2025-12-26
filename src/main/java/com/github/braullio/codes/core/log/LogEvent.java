@@ -109,18 +109,20 @@ public final class LogEvent implements Serializable {
             return this;
         }
 
-        public void countSuccess() {
+        public LogEventBuilder countSuccess() {
             if (this.counterSuccess == null) {
                 this.counterSuccess = 0L;
             }
             this.counterSuccess++;
+            return this;
         }
 
-        public void countError() {
+        public LogEventBuilder countError() {
             if (this.counterError == null) {
                 this.counterError = 0L;
             }
             this.counterError++;
+            return this;
         }
 
         public LogEventBuilder size(int size) {
