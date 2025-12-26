@@ -112,18 +112,12 @@ public final class LogEvent implements Serializable {
         }
 
         public LogEventBuilder countSuccess() {
-            if (this.counterSuccess == null) {
-                this.counterSuccess = 0L;
-            }
-            this.counterSuccess++;
+            this.counterSuccess = addCounter(this.counterSuccess);
             return this;
         }
 
         public LogEventBuilder countError() {
-            if (this.counterError == null) {
-                this.counterError = 0L;
-            }
-            this.counterError++;
+            this.counterError = addCounter(this.counterError);
             return this;
         }
 
@@ -158,6 +152,13 @@ public final class LogEvent implements Serializable {
 
         public void commit() {
             new LogEvent(this).commit();
+        }
+
+        private Long addCounter(Long counter) {
+            if (counter == null) {
+                counter = 0L;
+            }
+            return ++counter;
         }
     }
 }
