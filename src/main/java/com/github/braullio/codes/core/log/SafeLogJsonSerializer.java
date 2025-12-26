@@ -37,6 +37,9 @@ final class SafeLogJsonSerializer {
         if (event.getCounterError() != null) {
             root.put("countError", event.getCounterError());
         }
+        if (event.getSize() > 0) {
+            root.put("size", event.getSize());
+        }
         if (event.getDurationMs() != null) {
             root.put("durationMs", event.getDurationMs());
         }

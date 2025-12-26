@@ -36,6 +36,8 @@ class LoggingTestRunner {
         LogEvent.LogEventBuilder log = LogEvent.builder(traceId, cpf, GENERIC_JOB, HTTP_ERROR);
         try {
             String[] arrayDeStrings = {"Banana", "Maçã", "Pera"};
+            log.size(arrayDeStrings.length);
+
             for (String novaString : arrayDeStrings) {
                 if ("Pera".equals(novaString)) {
                     simularErro();

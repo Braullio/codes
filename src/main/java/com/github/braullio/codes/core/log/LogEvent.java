@@ -24,6 +24,7 @@ public final class LogEvent implements Serializable {
     private final Long counterSuccess;
     private final Long counterError;
     private final Long durationMs;
+    private final int size;
     private final Map<String, Object> extras;
     private final LogLevel levelOverride;
 
@@ -41,6 +42,7 @@ public final class LogEvent implements Serializable {
         this.durationMs = b.durationMs;
         this.extras = b.extras == null ? null : Collections.unmodifiableMap(b.extras);
         this.levelOverride = b.levelOverride;
+        this.size = b.size;
     }
 
     public void commit() {
@@ -58,6 +60,7 @@ public final class LogEvent implements Serializable {
     public Throwable getError() { return error; }
     public Long getCounterSuccess() { return counterSuccess; }
     public Long getCounterError() { return counterError; }
+    public int getSize() { return size; }
     public Long getDurationMs() { return durationMs; }
     public Map<String, Object> getExtras() { return extras; }
     public LogLevel getLevelOverride() { return levelOverride; }
@@ -78,6 +81,7 @@ public final class LogEvent implements Serializable {
         private Throwable error;
         private Long counterSuccess;
         private Long counterError;
+        private int size;
         private Long durationMs;
         private Map<String, Object> extras;
         private LogLevel levelOverride;
@@ -117,6 +121,11 @@ public final class LogEvent implements Serializable {
                 this.counterError = 0L;
             }
             this.counterError++;
+        }
+
+        public LogEventBuilder size(int size) {
+            this.size = size;
+            return this;
         }
 
         public LogEventBuilder durationMs(long durationMs) {
