@@ -97,6 +97,9 @@ class SimpleRequestHandler(BaseHTTPRequestHandler):
             SimpleRequestHandler.request_count[counter_key] += 1
 
         else:
+            print("#################################")
+            print("# Endpoint not found            #")
+            print("#################################")
             self._send_error_response(
                 405,
                 "Method Not Allowed" if matched else "Endpoint not found"
