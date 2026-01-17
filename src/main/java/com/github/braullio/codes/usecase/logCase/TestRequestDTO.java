@@ -1,4 +1,4 @@
-package com.github.braullio.codes.logImpl;
+package com.github.braullio.codes.usecase.logCase;
 
 import com.github.braullio.codes.core.log.annotation.LogIgnore;
 import com.github.braullio.codes.core.log.annotation.LogMask;
