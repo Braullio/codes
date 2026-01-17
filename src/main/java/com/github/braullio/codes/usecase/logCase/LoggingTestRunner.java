@@ -3,8 +3,8 @@ package com.github.braullio.codes.usecase.logCase;
 import com.github.braullio.codes.core.log.LogEvent;
 import com.github.braullio.codes.core.log.LogEventBuilder;
 
-import static com.github.braullio.codes.logImpl.ProjectLogSource.GENERIC_JOB;
-import static com.github.braullio.codes.logImpl.ProjectLogSource.API_CLIENT;
+import static com.github.braullio.codes.usecase.logCase.ProjectLogSource.GENERIC_JOB;
+import static com.github.braullio.codes.usecase.logCase.ProjectLogSource.API_CLIENT;
 import static com.github.braullio.codes.core.log.enums.EventType.*;
 
 class LoggingTestRunner {
