@@ -1,3 +1,10 @@
 spring:
   application:
     name: codes
+
+# === TOKENs ===
+local:
+  token:
+    endpoint: http://localhost:4040/oauth2/token
+    username: meuClientId
+    password: meuClientSecret
