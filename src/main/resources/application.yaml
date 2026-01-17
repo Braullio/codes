@@ -5,6 +5,6 @@ spring:
 # === TOKENs ===
 local:
   token:
-    endpoint: https://localhost:9443/oauth2/token
+    endpoint: http://localhost:4040/oauth2/token
     username: meuClientId
     password: meuClientSecret
